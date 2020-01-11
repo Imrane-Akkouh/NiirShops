@@ -19,4 +19,4 @@ let shopSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Shop', shopSchema)
+module.exports = mongoose.model('Shop', shopSchema);
