@@ -1,4 +1,5 @@
 const express = require('express');
+
 let router = express.Router();
 
 let User = require('../models/user.model.js');
@@ -25,7 +26,7 @@ router.get('/login', (req,res)=>{
     User.find({'username': req.body.username, 'password': req.body.password}, (err,doc)=>{
         if(doc.length==0){
             console.log("Could not find a matching user");
-            return res.status(404).send()
+            return res.status(404).send();
         }
 
         if(err){
@@ -40,7 +41,7 @@ router.put('/:username', (req,res)=>{
     let preferredShops = req.body.preferredShops;
     User.findById(req.body._id).then(user=>{
         user.preferredShops = preferredShops;
-        return user.save();
+        user.save();
     }).then((result)=>{
         console.log('Updated user successfully');
     }).catch((err)=>{
