@@ -14,7 +14,7 @@ const appRoutes: Routes = [
   { path: '', component: AuthComponent, pathMatch:"full" },
   { path: 'shops',component: DashboardComponent,canActivate: [AuthGuard],
     children: [{
-      path: 'preferred', component: DashboardComponent
+      path: 'pref', component: DashboardComponent
     }]
   },
   { path: '**', component: PageNotFoundComponent }
