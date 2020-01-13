@@ -12,7 +12,7 @@ import { AuthGuard } from './guards/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: '', component: AuthComponent, pathMatch:"full" },
-  { path: 'shops',component: DashboardComponent,canActivate: [AuthGuard],
+  { path: 'shops',component: DashboardComponent,/*canActivate: [AuthGuard],*/
     children: [{
       path: 'pref', component: DashboardComponent
     }]
