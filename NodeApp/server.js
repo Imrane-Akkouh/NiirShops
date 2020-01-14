@@ -20,6 +20,7 @@ app.use('/shops', shopController);
 
 app.use('/api', localisationController);
 
+//url of the connection, change it depending your use case, maybe atlas mongodb
 let mongoUrl = 'mongodb://localhost:27017/NiirShops';
 
 //Setting up connection with mongodb and starting the server

@@ -4,6 +4,7 @@ let router = express.Router();
 
 let User = require('../models/user.model.js');
 
+//Create a new User
 router.post('/', (req,res)=>{
     let username = req.body.username;
     let password = req.body.password;
@@ -21,6 +22,7 @@ router.post('/', (req,res)=>{
     })
 });
 
+//Fetch a User's details
 router.get('/login', (req,res)=>{
     let username = req.query.username;
     let password = req.query.password;
@@ -37,6 +39,7 @@ router.get('/login', (req,res)=>{
     });
 })
 
+//Update a User's details
 router.put('/:username', (req,res)=>{
     let preferredShops = req.query.user.preferredShops;
     User.findById(req.query.user._id).then(user=>{

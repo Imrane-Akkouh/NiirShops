@@ -20,6 +20,8 @@ export class DashboardComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+
+    //fetching preferred Shops
     this.usersService.currentUser.preferredShops.forEach(shopId=>{
         this.shopsService.getPreferredShop(shopId).subscribe((shop)=>{
         this.preferredShops.push(shop as Shop);
@@ -27,6 +29,7 @@ export class DashboardComponent implements OnInit {
       });
     })
     
+    //fetching Nearby Shops
     this.shopsService.getNearbyShops().subscribe((shops)=>{
       (shops as Shop[]).forEach(shop=>{
         if(this.usersService.currentUser.preferredShops.indexOf(shop._id)==(-1)){
@@ -35,7 +38,8 @@ export class DashboardComponent implements OnInit {
       })
     });
 
-    this.usersService.getCurrentLocalisation().subscribe(loc=>{
+    //getting current localisation using ipapi.co to dynamically calculate distances.
+    this.usersService.getCurrentLocalisation().subscribe(loc=>{//real localisation unless using a vpn or proxy
       this.currentLocalisation.latitude = loc.latitude;
       this.currentLocalisation.longitude = loc.longitude;
       console.log(this.currentLocalisation);
@@ -51,7 +55,10 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  //function that sorts the shops array by longitude and latitude
   sortShops(shop1, shop2){
+
+    //function that calculates distances using longitude and latitude (a real pain in the a** calculations)
     function calcDistanceWithLatLon(lat1,lon1,lat2,lon2) {
       let R = 6371; // km (change this constant to get miles)
       let dLat = (lat2-lat1) * Math.PI / 180;
@@ -80,5 +87,7 @@ export class DashboardComponent implements OnInit {
     }
     return 0;
   }
+
+
 
 }

@@ -15,8 +15,8 @@
             My Preferred Shops
         </a>
     </header>
-    <section *ngIf="currentPage=='pref';else other_content">
 
+    <section *ngIf="currentPage=='pref';else other_content">
         <div class="card-container" *ngFor="let shop of preferredShops">
             <div class="shop-title"><p>{{shop.shopName}}</p></div>
             <img [src]="shop.imageUrl" alt="shop-image">
@@ -25,12 +25,10 @@
                 <input type="button" name="like" id="like" value="Like">                
             </div>
         </div>
-
     </section>
 
     <ng-template #other_content>
         <section>
-
             <div class="card-container" *ngFor="let shop of nearbyShops">
                 <div class="shop-title"><p>{{shop.shopName}}</p></div>
                 <img [src]="shop.imageUrl" alt="shop-image">
@@ -39,7 +37,6 @@
                     <input type="button" name="like" id="like" value="Like">                
                 </div>
             </div>
-    
         </section>
     </ng-template>
 </body>

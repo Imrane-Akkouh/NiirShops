@@ -40,7 +40,7 @@ export class UsersService {
   isAuthenticated(){
     return (this.currentUser!=null ? true : false);
   }
-
+  
   getCurrentLocalisation(){
     return this.http.get(this.baseUrl + 'api/localisation');
   }

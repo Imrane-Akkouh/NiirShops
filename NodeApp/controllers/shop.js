@@ -52,6 +52,7 @@ router.get('/nearby',(req,res)=>{
 })
 */
 
+//Fetch all Shops
 router.get('/', (req, res)=>{
     Shop.find((err,docs)=>{
         if(docs.length==0){
@@ -68,6 +69,7 @@ router.get('/', (req, res)=>{
     })
 })
 
+//Fetch a shop by Id
 router.get('/:id', (req, res)=>{
     let shopId = req.query._id;
     console.log(shopId);
