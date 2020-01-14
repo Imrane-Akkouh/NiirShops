@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 
 let app = express();
 app.use(bodyParser.json());
-app.use(cors({origin: 'http://localost:4200'}));
+app.use(cors({origin: 'http://localhost:4200'}));
 
 //Handling users authentication
 app.use('/users', userController);
@@ -20,8 +20,10 @@ app.use('/shops', shopController);
 
 app.use('/api', localisationController);
 
+let mongoUrl = 'mongodb://localhost:27017/NiirShops';
+
 //Setting up connection with mongodb and starting the server
-mongoose.connect('mongodb://localhost:27017/NiirShops')
+mongoose.connect(mongoUrl)
 .then(res=>{
     app.listen(3000,()=>{
         console.log('Connected successfully to mongodb.')

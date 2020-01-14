@@ -1,5 +1,5 @@
 const express = require('express');
-
+const mongoose = require('mongoose');
 
 
 let router = express.Router();
@@ -63,13 +63,15 @@ router.get('/', (req, res)=>{
             console.log(err);
             return res.status(500).send();
         }
+        console.log(docs);
         res.send(docs);
     })
 })
 
 router.get('/:id', (req, res)=>{
-    let shopId = req.body._id;
-    Shop.find({_id: shopId},(err,doc)=>{
+    let shopId = req.query._id;
+    console.log(shopId);
+    Shop.find({_id: mongoose.Types.ObjectId(shopId)},(err,doc)=>{
         if(doc.length==0){
             console.log("Could not fetch shop");
             return res.status(404).send();
@@ -78,7 +80,8 @@ router.get('/:id', (req, res)=>{
             console.log(err);
             return res.status(500).send();
         }
-        res.send(doc);
+        console.log(doc);
+        res.send(doc[0]);
     })
 })
 

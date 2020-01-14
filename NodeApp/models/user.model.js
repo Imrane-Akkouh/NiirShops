@@ -10,10 +10,7 @@ let userSchema = mongoose.Schema({
         required: true
     },
     preferredShops:[{
-        shopId:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Shop'
-        }
+        type: String
     }]
 });
 

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class UsersService {
+  baseUrl:string = "http://localhost:3000/";
   currentUser:User = null;
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -17,10 +18,10 @@ export class UsersService {
   }
 
   signInUser(username,password){
-    this.http.get('/users/login',{params:{"username": username, "password": password}})
+    this.http.get(this.baseUrl+'users/login',{params:{"username": username, "password": password}})
     .subscribe(user=>{
       if(user){
-        this.currentUser = user as User;
+        this.currentUser = user[0] as User;
         this.router.navigate(['/shops']);
       }else{
         this.router.navigate(['/']);
@@ -29,16 +30,18 @@ export class UsersService {
   }
 
   signUpUser(username, password){
-    this.http.post('/users',{params:{
-      username: username,
-      password: password
-    }}).subscribe((user)=>{
+    this.http.post(this.baseUrl+'users',{"username": username, "password": password})
+    .subscribe((user)=>{
       this.currentUser = user as User;
       this.router.navigate(['/shops']);
     });
   }
 
   isAuthenticated(){
-    return this.currentUser? true : false;
+    return (this.currentUser!=null ? true : false);
+  }
+
+  getCurrentLocalisation(){
+    return this.http.get(this.baseUrl + 'api/localisation');
   }
 }

@@ -10,14 +10,14 @@
     <div class="container">
         <form>
             <label for="username">Username: 
-                <input type="text" name="username" id="username" placeholder="Username">
+                <input type="text" name="username" id="username" placeholder="Username" [(ngModel)]="username">
             </label>
             <label for="password">Password: 
-                <input type="password" name="password" id="password" placeholder="Password">
+                <input type="password" name="password" id="password" placeholder="Password" [(ngModel)]="password">
             </label>
             <div class="buttons">
-                <input type="button" value="SignUp" class="signup-button">
-                <input type="button" value="SignIn" class="signin-button">
+                <input type="button" value="SignUp" class="signup-button" (click)="signUp()">
+                <input type="button" value="SignIn" class="signin-button" (click)="signIn()">
             </div>
             
         </form>

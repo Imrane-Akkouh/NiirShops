@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AuthComponent } from './components/auth/auth.component';
@@ -12,7 +13,7 @@ import { AuthGuard } from './guards/auth-guard.service';
 
 const appRoutes: Routes = [
   { path: '', component: AuthComponent, pathMatch:"full" },
-  { path: 'shops',component: DashboardComponent,/*canActivate: [AuthGuard],*/
+  { path: 'shops',component: DashboardComponent,canActivate: [AuthGuard],
     children: [{
       path: 'pref', component: DashboardComponent
     }]
@@ -31,6 +32,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],
