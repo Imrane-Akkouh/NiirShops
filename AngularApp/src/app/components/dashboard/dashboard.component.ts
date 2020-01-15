@@ -26,7 +26,6 @@ export class DashboardComponent implements OnInit {
     this.usersService.currentUser.preferredShops.forEach(shopId=>{
         this.shopsService.getPreferredShop(shopId).subscribe((shop)=>{
         this.preferredShops.push(shop as Shop);
-        console.log((shop as Shop).imageUrl);
       });
     })
     
@@ -44,8 +43,8 @@ export class DashboardComponent implements OnInit {
       let local = Object.assign(loc,this.localisation); //Transfrom the neat Object to coordinates: lat/lon
       this.currentLocalisation.latitude = local.latitude;
       this.currentLocalisation.longitude = local.longitude;
-      console.log(this.currentLocalisation);
       this.nearbyShops.sort(this.sortShops.bind(this));
+      this.preferredShops.sort(this.sortShops.bind(this));
     })
   }
 
@@ -60,50 +59,65 @@ export class DashboardComponent implements OnInit {
   //function that sorts the shops array by longitude and latitude
   sortShops(shop1, shop2){
 
-    //function that calculates distances using longitude and latitude (a real pain in the a** calculations)
-    function calcDistanceWithLatLon(lat1,lon1,lat2,lon2) {
-      let R = 6371; // km (change this constant to get miles)
-      let dLat = (lat2-lat1) * Math.PI / 180;
-      let dLon = (lon2-lon1) * Math.PI / 180;
-      let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) *
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      let d = R * c;
-      if (d>1) return Math.round(d)+"km";
-      else if (d<=1) return Math.round(d*1000)+"m";
-      return d;
-    }
-
-    if(calcDistanceWithLatLon(shop1.latitude,shop1.longitude,
-      this.currentLocalisation.latitude,this.currentLocalisation.longitude)<
-      calcDistanceWithLatLon(shop2.latitude,shop2.longitude,
-      this.currentLocalisation.latitude,this.currentLocalisation.longitude)){
+    if(this.calcDistanceWithLatLon(
+      shop1.latitude,shop1.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
+      )<
+      this.calcDistanceWithLatLon(
+      shop2.latitude,shop2.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
+      )){
         return -1;
     }
-    if(calcDistanceWithLatLon(shop1.latitude,shop1.longitude,
-      this.currentLocalisation.latitude,this.currentLocalisation.longitude)>
-      calcDistanceWithLatLon(shop2.latitude,shop2.longitude,
-      this.currentLocalisation.latitude,this.currentLocalisation.longitude)){
+    if(this.calcDistanceWithLatLon(
+      shop1.latitude,shop1.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
+      )>
+      this.calcDistanceWithLatLon(
+      shop2.latitude,shop2.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
+      )){
         return 1;
     }
     return 0;
   }
 
+  //function that calculates distances using longitude and latitude (a real pain in the a** calculations)
+  calcDistanceWithLatLon(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = (lat2-lat1)* (Math.PI/180);
+    var dLon = (lon2-lon1)* (Math.PI/180); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos((lat1)* (Math.PI/180)) * Math.cos((lat2)* (Math.PI/180)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+  }
+
 
   dislikeShop(shopId){
-
+    let dislikedShop = this.nearbyShops.find(shop=>shop._id == shopId);
+    let indexOfDislikedShop = this.nearbyShops.indexOf(dislikedShop);
+    let tempShopHolder = this.nearbyShops.splice(indexOfDislikedShop,1)[0];
+    setTimeout(()=>{
+      this.nearbyShops.push(tempShopHolder);
+      this.nearbyShops.sort(this.sortShops.bind(this));
+    }, 10000);
   }
 
   likeShop(shopId){
-    let likedshop = this.nearbyShops.find(shop=>shop._id == shopId);
-    let indexOfLikedShop = this.nearbyShops.indexOf(likedshop);
-    this.preferredShops.push(this.nearbyShops.splice(indexOfLikedShop,1)[0]);
+    this.moveShopFromArrayToOther(this.nearbyShops, this.preferredShops, shopId);
     this.usersService.addPreferredShop(shopId).subscribe();
   }
 
   removeFromPreferred(shopId){
+    this.moveShopFromArrayToOther(this.preferredShops, this.nearbyShops, shopId);
+    this.usersService.removePreferredShop(shopId).subscribe();
+  }
 
+  moveShopFromArrayToOther(source, target, shopId){
+    let shopInstance = source.find(shop=>shop._id == shopId);
+    let indexOfShopInstance = source.indexOf(shopInstance);
+    target.push(source.splice(indexOfShopInstance,1)[0]);
+    target.sort(this.sortShops.bind(this));
   }
 
 }

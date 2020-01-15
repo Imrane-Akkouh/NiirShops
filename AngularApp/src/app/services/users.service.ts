@@ -43,7 +43,12 @@ export class UsersService {
   
   addPreferredShop(shopId){
     this.currentUser.preferredShops.push(shopId);
-    console.log(this.currentUser);
+    return this.http.put(this.baseUrl+'users/'+this.currentUser.username,{"user":this.currentUser});
+  }
+
+  removePreferredShop(shopId){
+    let indexOfPreferredShop = this.currentUser.preferredShops.indexOf(shopId);
+    this.currentUser.preferredShops.splice(indexOfPreferredShop,1);
     return this.http.put(this.baseUrl+'users/'+this.currentUser.username,{"user":this.currentUser});
   }
 
