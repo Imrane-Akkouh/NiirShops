@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   preferredShops:Shop[] = [];
   nearbyShops:Shop[] = [];
   currentPage: string = "shops";
+  localisation:{latitude:number,longitude:number};
   currentLocalisation = {latitude:0, longitude:0};
   constructor(
     private usersService: UsersService, 
@@ -40,8 +41,9 @@ export class DashboardComponent implements OnInit {
 
     //getting current localisation using ipapi.co to dynamically calculate distances.
     this.usersService.getCurrentLocalisation().subscribe(loc=>{//real localisation unless using a vpn or proxy
-      this.currentLocalisation.latitude = loc.latitude;
-      this.currentLocalisation.longitude = loc.longitude;
+      let local = Object.assign(loc,this.localisation); //Transfrom the neat Object to coordinates: lat/lon
+      this.currentLocalisation.latitude = local.latitude;
+      this.currentLocalisation.longitude = local.longitude;
       console.log(this.currentLocalisation);
       this.nearbyShops.sort(this.sortShops.bind(this));
     })
@@ -89,5 +91,19 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  dislikeShop(shopId){
+
+  }
+
+  likeShop(shopId){
+    let likedshop = this.nearbyShops.find(shop=>shop._id == shopId);
+    let indexOfLikedShop = this.nearbyShops.indexOf(likedshop);
+    this.preferredShops.push(this.nearbyShops.splice(indexOfLikedShop,1)[0]);
+    this.usersService.addPreferredShop(shopId).subscribe();
+  }
+
+  removeFromPreferred(shopId){
+
+  }
 
 }

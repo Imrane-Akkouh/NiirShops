@@ -21,8 +21,7 @@
             <div class="shop-title"><p>{{shop.shopName}}</p></div>
             <img [src]="shop.imageUrl" alt="shop-image">
             <div class="like-dislike">
-                <input type="button" name="dislike" id="dislike" value="Dislike">
-                <input type="button" name="like" id="like" value="Like">                
+                <input type="button" name="remove" id="remove" value="Remove" (click)="removeFromPreferred(shop._id)">                
             </div>
         </div>
     </section>
@@ -33,8 +32,8 @@
                 <div class="shop-title"><p>{{shop.shopName}}</p></div>
                 <img [src]="shop.imageUrl" alt="shop-image">
                 <div class="like-dislike">
-                    <input type="button" name="dislike" id="dislike" value="Dislike">
-                    <input type="button" name="like" id="like" value="Like">                
+                    <input type="button" name="dislike" id="dislike" value="Dislike" (click)="dislikeShop(shop._id)">
+                    <input type="button" name="like" id="like" value="Like" (click)="likeShop(shop._id)">
                 </div>
             </div>
         </section>

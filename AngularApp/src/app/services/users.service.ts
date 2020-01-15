@@ -41,6 +41,12 @@ export class UsersService {
     return (this.currentUser!=null ? true : false);
   }
   
+  addPreferredShop(shopId){
+    this.currentUser.preferredShops.push(shopId);
+    console.log(this.currentUser);
+    return this.http.put(this.baseUrl+'users/'+this.currentUser.username,{"user":this.currentUser});
+  }
+
   getCurrentLocalisation(){
     return this.http.get(this.baseUrl + 'api/localisation');
   }

@@ -41,8 +41,9 @@ router.get('/login', (req,res)=>{
 
 //Update a User's details
 router.put('/:username', (req,res)=>{
-    let preferredShops = req.query.user.preferredShops;
-    User.findById(req.query.user._id).then(user=>{
+    let preferredShops = req.body.user.preferredShops;
+    console.log(req.body.user.preferredShops);
+    User.findById(req.body.user._id).then(user=>{
         user.preferredShops = preferredShops;
         user.save();
     }).then((result)=>{

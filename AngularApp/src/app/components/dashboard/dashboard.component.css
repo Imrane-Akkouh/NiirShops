@@ -94,13 +94,15 @@ input[type=button]:active{
     background-color: rgb(59, 226, 59);
 }
 #dislike{
-    background-color: red;
-    
-    border: none;
-    border-radius: 2px;
-    transition: 0.3s;
+    background-color: red; 
 }
 #dislike:hover{
+    background-color: rgb(255, 79, 79);
+}
+#remove{
+    background-color: red;
+}
+#remove:hover{
     background-color: rgb(255, 79, 79);
 }
 
