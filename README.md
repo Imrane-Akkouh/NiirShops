@@ -42,7 +42,10 @@ This application has weak security management (no tokens no hash and salt for pa
 2)In both type **"npm install"** and then press enter.  
 ..After the installation is finished  
 3)in NodeApp cmd/terminal type **"node server.js"** and then press enter.  
-4)in NodeApp cmd/terminal type **"ng serve -o"** and then press enter.
+4)in NodeApp cmd/terminal type **"ng serve -o"** and then press enter.  
+
+-If you want to really test the localisation functionnality run a vpn on your computer on china or america and see how the fetched data will get sorted (after re-login of course).  
+--just be sure to run a vpn on your system and not the browser, because node is the one handeling the localisation api and node doesn't run on the browser.
 
 ## Further thoughts
 -enhance security of authentication through JWT and use sessions  
