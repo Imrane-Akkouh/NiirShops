@@ -37,13 +37,13 @@ And this doesn't go for only the radius but also the shops as they are hard code
 This application has weak security management (no tokens no hash and salt for passwords no protection vs sql injections) because i only wanted to bring the MVP as soon as possible and then progressively polish the application features by time. so if you are testing the app **DO NOT RELOAD THE PAGE (OR USE BACKWAR/FORWARD ARROW) UNLESS YOU WANT TO LOGOUT**
 
 ## how to run the app
-### 1) installing packages
-a-Open a cmd/terminal in NodeApp and another one in AngularApp.  
-b-In both type **"npm install"** and then press enter.  
-### 2) After the installation is finished  
-a-in NodeApp's cmd/terminal type **"node server.js"** and then press enter.  
-b-in AngularApp's cmd/terminal type **"ng serve -o"** and then press enter.  
-### 3) Testing(optional)
+### installing packages
+1)Open a cmd/terminal in NodeApp and another one in AngularApp.  
+2)In both type **"npm install"** and then press enter.  
+..After the installation is finished  
+3)in NodeApp cmd/terminal type **"node server.js"** and then press enter.  
+4)in NodeApp cmd/terminal type **"ng serve -o"** and then press enter.  
+
 -If you want to really test the localisation functionnality run a vpn on your computer on china or america and see how the fetched data will get sorted (after re-login of course).  
 --just be sure to run a vpn on your system and not the browser, because node is the one handeling the localisation api and node doesn't run on the browser.
 
