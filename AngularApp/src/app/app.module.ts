@@ -9,10 +9,12 @@ import { AuthComponent } from './components/auth/auth.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { AuthGuard } from './guards/auth-guard.service';
+import { UnAuthGuard } from './guards/unauth-guard.service';
+
 
 
 const appRoutes: Routes = [
-  { path: '', component: AuthComponent, pathMatch:"full" },
+  { path: '', component: AuthComponent, pathMatch:"full",canActivate: [UnAuthGuard] },
   { path: 'shops',component: DashboardComponent,canActivate: [AuthGuard],
     children: [{
       path: 'pref', component: DashboardComponent

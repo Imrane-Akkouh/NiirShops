@@ -16,8 +16,10 @@ app.use(cors({origin: 'http://localhost:4200'}));
 //Handling users authentication
 app.use('/users', userController);
 
+//Handling shops interactions
 app.use('/shops', shopController);
 
+//Fetching localisation using the actual ip address
 app.use('/api', localisationController);
 
 //url of the connection, change it depending your use case

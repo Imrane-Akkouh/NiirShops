@@ -64,7 +64,6 @@ router.get('/', (req, res)=>{
             console.log(err);
             return res.status(500).send();
         }
-        console.log(docs);
         res.send(docs);
     })
 })
@@ -72,7 +71,6 @@ router.get('/', (req, res)=>{
 //Fetch a shop by Id
 router.get('/:id', (req, res)=>{
     let shopId = req.query._id;
-    console.log(shopId);
     Shop.find({_id: mongoose.Types.ObjectId(shopId)},(err,doc)=>{
         if(doc.length==0){
             console.log("Could not fetch shop");
@@ -82,7 +80,6 @@ router.get('/:id', (req, res)=>{
             console.log(err);
             return res.status(500).send();
         }
-        console.log(doc);
         res.send(doc[0]);
     })
 })

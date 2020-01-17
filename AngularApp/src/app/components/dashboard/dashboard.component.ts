@@ -12,67 +12,75 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   preferredShops:Shop[] = [];
   nearbyShops:Shop[] = [];
-  currentPage: string = "shops";
-  localisation:{latitude:number,longitude:number};
-  currentLocalisation = {latitude:0, longitude:0};
+  currentPage: string = "shops"; //variable to check if user wants to show nearby or preferred shops
+  localisation:{latitude:number,longitude:number}; //just a custom old javascript constructor
+  currentLocalisation = {latitude:0, longitude:0}; //this is the user location lat and lon
+  
   constructor(
     private usersService: UsersService, 
     private shopsService: ShopsService, 
     private router: Router) { }
 
   ngOnInit() {
-
-    //fetching preferred Shops
-    this.usersService.currentUser.preferredShops.forEach(shopId=>{
-        this.shopsService.getPreferredShop(shopId).subscribe((shop)=>{
-        this.preferredShops.push(shop as Shop);
-      });
-    })
-    
-    //fetching Nearby Shops
-    this.shopsService.getNearbyShops().subscribe((shops)=>{
-      (shops as Shop[]).forEach(shop=>{
-        if(this.usersService.currentUser.preferredShops.indexOf(shop._id)==(-1)){
-          this.nearbyShops.push(shop);
-        }
+    this.router.navigate(['/shops']);
+    this.usersService.getCurrentUser().then(user=>{
+        //fetching preferred Shops
+        user.preferredShops.forEach(shopId=>{
+          this.shopsService.getPreferredShop(shopId).subscribe((shop)=>{
+            this.preferredShops.push(shop as Shop);
+          });
+        })
+      
+        //fetching Nearby Shops
+        this.shopsService.getNearbyShops().subscribe((shops)=>{
+          (shops as Shop[]).forEach(shop=>{
+            if(user.preferredShops.indexOf(shop._id)==(-1)){
+              this.nearbyShops.push(shop);
+            }
+          })
+        });
+        //getting current localisation using ipapi.co to dynamically calculate distances.
+        this.usersService.getCurrentLocalisation().subscribe(loc=>{//real localisation unless using a vpn or proxy
+          let local = Object.assign(loc,this.localisation); //Transfrom the neat Object to coordinates: lat/lon
+          this.currentLocalisation.latitude = local.latitude;
+          this.currentLocalisation.longitude = local.longitude;
+          this.nearbyShops.sort(this.sortShops.bind(this));//here we use the custom made sorting function
+          this.preferredShops.sort(this.sortShops.bind(this));//same thing here
+        })
       })
-    });
-
-    //getting current localisation using ipapi.co to dynamically calculate distances.
-    this.usersService.getCurrentLocalisation().subscribe(loc=>{//real localisation unless using a vpn or proxy
-      let local = Object.assign(loc,this.localisation); //Transfrom the neat Object to coordinates: lat/lon
-      this.currentLocalisation.latitude = local.latitude;
-      this.currentLocalisation.longitude = local.longitude;
-      this.nearbyShops.sort(this.sortShops.bind(this));
-      this.preferredShops.sort(this.sortShops.bind(this));
-    })
+    
   }
 
   goToPreferredShops(){
-    this.currentPage = this.router.getCurrentNavigation().extractedUrl.toString().split('/').pop();
+    //here we extract the last part of the url "pref" to show preferred shops
+    let page = this.router.getCurrentNavigation().extractedUrl.toString().split('/').pop();
+    if(page=='pref'){
+      this.currentPage = page;
+    }
   }
   goToNearbyShops(){
-    this.currentPage = this.router.getCurrentNavigation().extractedUrl.toString().split('/').pop();
+    //here we extract the last part of the url "shops" to show nearby shops
+    let page = this.router.getCurrentNavigation().extractedUrl.toString().split('/').pop();
+    if(page !='pref'){
+      this.currentPage = page;
+    }
   }
 
 
-  //function that sorts the shops array by longitude and latitude
+  //function that sorts the shops array by longitude and latitude using the calcDistanceWithLatLon method
+  //we are going to pass this function as a custom sorting algorithm to the sort method of JS
+  //see the constructor
   sortShops(shop1, shop2){
-
-    if(this.calcDistanceWithLatLon(
+    let distanceToShop1 = this.calcDistanceWithLatLon(
       shop1.latitude,shop1.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
-      )<
-      this.calcDistanceWithLatLon(
+      )
+    let distanceToShop2 = this.calcDistanceWithLatLon(
       shop2.latitude,shop2.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
-      )){
+      ) 
+    if(distanceToShop1 < distanceToShop2){
         return -1;
     }
-    if(this.calcDistanceWithLatLon(
-      shop1.latitude,shop1.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
-      )>
-      this.calcDistanceWithLatLon(
-      shop2.latitude,shop2.longitude,this.currentLocalisation.latitude,this.currentLocalisation.longitude
-      )){
+    if(distanceToShop1 > distanceToShop2){
         return 1;
     }
     return 0;
@@ -118,6 +126,10 @@ export class DashboardComponent implements OnInit {
     let indexOfShopInstance = source.indexOf(shopInstance);
     target.push(source.splice(indexOfShopInstance,1)[0]);
     target.sort(this.sortShops.bind(this));
+  }
+
+  logout(){
+    this.usersService.logout();
   }
 
 }

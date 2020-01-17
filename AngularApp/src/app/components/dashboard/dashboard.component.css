@@ -81,7 +81,7 @@ input[type=button]{
     font-size: 1.05rem;
     color: white;
     border: none;
-    border-radius: 2px;
+    border-radius: 3px;
     transition: 0.3s;
 }
 input[type=button]:active{

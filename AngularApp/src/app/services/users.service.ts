@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-//import { Observable } from 'rxjs/Observable';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
 
@@ -9,19 +8,19 @@ import { Router } from '@angular/router';
 })
 export class UsersService {
   baseUrl:string = "http://localhost:3000/";
-  currentUser:User = null;
 
   constructor(private http: HttpClient, private router: Router) { }
 
   getCurrentUser(){
-    return this.currentUser;
+    return this.http.get(this.baseUrl + 'users/current_user').toPromise().then(user=>{
+      return (user as User);
+    });
   }
 
   signInUser(username,password){
     this.http.get(this.baseUrl+'users/login',{params:{"username": username, "password": password}})
     .subscribe(user=>{
       if(user){
-        this.currentUser = user[0] as User;
         this.router.navigate(['/shops']);
       }else{
         this.router.navigate(['/']);
@@ -32,27 +31,32 @@ export class UsersService {
   signUpUser(username, password){
     this.http.post(this.baseUrl+'users',{"username": username, "password": password})
     .subscribe((user)=>{
-      this.currentUser = user as User;
       this.router.navigate(['/shops']);
     });
   }
 
+  logout(){
+    this.http.get(this.baseUrl + 'users/logout').toPromise().then(()=>{
+      this.router.navigate(['/']);
+    });
+  }
+
   isAuthenticated(){
-    return (this.currentUser!=null ? true : false);
+    return this.getCurrentUser().then(user=>{
+      return (user!=null ? true : false);
+    })
   }
   
   addPreferredShop(shopId){
-    this.currentUser.preferredShops.push(shopId);
-    return this.http.put(this.baseUrl+'users/'+this.currentUser.username,{"user":this.currentUser});
+    return this.http.put(this.baseUrl+'users/current_user',{"shopId":shopId});
   }
 
   removePreferredShop(shopId){
-    let indexOfPreferredShop = this.currentUser.preferredShops.indexOf(shopId);
-    this.currentUser.preferredShops.splice(indexOfPreferredShop,1);
-    return this.http.put(this.baseUrl+'users/'+this.currentUser.username,{"user":this.currentUser});
+    return this.http.put(this.baseUrl+'users/current_user',{"shopId":shopId});
   }
 
   getCurrentLocalisation(){
     return this.http.get(this.baseUrl + 'api/localisation');
   }
+
 }

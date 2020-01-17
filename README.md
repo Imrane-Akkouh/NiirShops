@@ -34,7 +34,7 @@ In case the user added some shops to his preferred shops list, he can remove the
 I could have gone with a radius parameter to show only nearby shops depending on the dinamically fetched user location, BUT i had already started with an architecture that is suitable for google-places-web api (has already a radius param) and i couldn't change much when i figured the horrible limit of requests quota of the service.  
 And this doesn't go for only the radius but also the shops as they are hard coded in the database and not fetched dynamically depending on the user's location or using an api, thus they are only arbitraty places with real longitude and latitude coordinates.(but it will later)  
   
-This application has weak security management (no tokens no hash and salt for passwords no protection vs sql injections) because i only wanted to bring the MVP as soon as possible and then progressively polish the application features by time. so if you are testing the app **DO NOT RELOAD THE PAGE (OR USE BACKWAR/FORWARD ARROW) UNLESS YOU WANT TO LOGOUT**
+This application has weak security management (no tokens no hash and salt for passwords no protection vs sql injections) because i only wanted to bring the MVP as soon as possible and then progressively polish the application features by time.
 
 ## how to run the app
 ### installing packages

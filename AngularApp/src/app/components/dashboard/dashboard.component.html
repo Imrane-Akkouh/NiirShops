@@ -8,11 +8,14 @@
 </head>
 <body>
     <header>
-        <a routerLink="/shops" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="goToNearbyShops()">
+        <a [routerLink]="['/shops']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="goToNearbyShops()">
             Nearby Shops
         </a>
-        <a routerLink="/shops/pref"  routerLinkActive="active" (click)="goToPreferredShops()">
+        <a [routerLink]="['/shops','pref']"  routerLinkActive="active" (click)="goToPreferredShops()">
             My Preferred Shops
+        </a>
+        <a id="logout" (click)="logout()">
+            Logout
         </a>
     </header>
 

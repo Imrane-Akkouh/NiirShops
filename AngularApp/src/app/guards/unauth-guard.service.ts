@@ -6,16 +6,16 @@ import { Observable } from 'rxjs/internal/Observable';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate{
+export class UnAuthGuard implements CanActivate{
 
   constructor(private userService: UsersService, private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.userService.isAuthenticated().then(authorized=>{
-      if(authorized){
+      if(!authorized){
         return true;
       }else{
-        this.router.navigate(['/']);
+        this.router.navigate(['/shops']);
         return false;
       };
     })
