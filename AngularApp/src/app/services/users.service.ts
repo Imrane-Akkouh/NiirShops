@@ -31,7 +31,11 @@ export class UsersService {
   signUpUser(username, password){
     this.http.post(this.baseUrl+'users',{"username": username, "password": password})
     .subscribe((user)=>{
-      this.router.navigate(['/shops']);
+      if(user){
+        this.router.navigate(['/shops']);
+      }else{
+        this.router.navigate(['/']);
+      }
     });
   }
 

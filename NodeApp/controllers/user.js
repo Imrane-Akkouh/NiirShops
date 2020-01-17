@@ -18,7 +18,7 @@ router.post('/', (req,res)=>{
     })
     user.save((err, doc)=>{
         if(!err){
-            current_user = doc[0];
+            current_user = doc;
             res.send(doc);
         }else{
             console.log(`Could not create a user`);

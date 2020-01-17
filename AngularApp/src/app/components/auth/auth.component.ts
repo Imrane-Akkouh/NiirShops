@@ -20,6 +20,8 @@ export class AuthComponent implements OnInit {
 
   signUp(){
     this.userService.signUpUser(this.username, this.password);
+    this.username = "";
+    this.password = "";
   }
 
   signIn(){
