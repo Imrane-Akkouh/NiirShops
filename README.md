@@ -16,7 +16,7 @@ This application is made using the MEAN stack "Mongodb Express Angular Nodejs"
 Besides the main technologies we used ipapi.co api to dynamicaly get the user's location
 
 ## Important Note
-This app is using the Geolocalisation(latitude and latitude) to calculate distances  
+This app is using the Geolocalisation(longitude and latitude) to calculate distances  
 Do not reload the application pages cuz user data will be lost (waiting for enhancement)
 
 ## Missing Features
@@ -36,7 +36,7 @@ And this doesn't go for only the radius but also the shops as they are hard code
   
 This application has weak security management (no tokens no hash and salt for passwords no protection vs sql injections) because i only wanted to bring the MVP as soon as possible and then progressively polish the application features by time.
 
-## how to run the app
+## How to run the app
 ### installing packages
 1)Open a cmd/terminal in NodeApp and another one in AngularApp.  
 2)In both type **"npm install"** and then press enter.  
@@ -44,6 +44,7 @@ This application has weak security management (no tokens no hash and salt for pa
 3)in NodeApp cmd/terminal type **"node server.js"** and then press enter.  
 4)in NodeApp cmd/terminal type **"ng serve -o"** and then press enter.  
 
+### testing
 -If you want to really test the localisation functionnality run a vpn on your computer on china or america and see how the fetched data will get sorted (after re-login of course).  
 --just be sure to run a vpn on your system and not the browser, because node is the one handeling the localisation api and node doesn't run on the browser.
 
